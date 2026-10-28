@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+            name="description"
+            content="Scopri NOVA STREET, il catalogo digitale di sneakers, streetwear e accessori. Contattaci per informazioni e disponibilità."
+    >
+
+    <meta name="theme-color" content="#20211e">
+
+    <title>NOVA STREET | Sneakers & Streetwear</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+<header class="site-header">
+
+    <a class="brand" href="#" aria-label="Torna all'inizio">
+        <img
+                id="store-logo"
+                class="brand-logo"
+                src="logos/nova-street.png"
+                alt="Logo NOVA STREET"
+                hidden
+        >
+<!--        <span class="brand-mark" id="brand-mark">NS</span>-->
+        <span id="store-name">NOVA STREET</span>
+    </a>
+
+
+    <a class="header-contact" href="#catalogo">
+        Scopri i prodotti <span aria-hidden="true">↗</span>
+    </a>
+</header>
+
+<main>
+    <section class="hero">
+        <p class="eyebrow" id="store-subtitle">
+            SNEAKERS · STREETWEAR · DAILY STYLE
+        </p>
+
+        <h1>
+            Il tuo stile.<br>
+            <span>Le tue regole.</span>
+        </h1>
+
+        <p class="hero-description" id="hero-description">
+            Scopri la nostra selezione di sneakers,
+            abbigliamento e accessori. Trova i tuoi preferiti
+            e contattaci per informazioni e disponibilità.
+        </p>
+
+        <a class="hero-link" href="#catalogo">
+            Scopri la collezione <span aria-hidden="true">↓</span>
+        </a>
+    </section>
+
+    <section class="catalog-section" id="catalogo">
+        <div class="section-heading">
+            <div>
+                <p class="eyebrow">LA NOSTRA SELEZIONE</p>
+                <h2>Scopri i prodotti</h2>
+            </div>
+
+            <p class="product-count" id="product-count">
+                9 prodotti
+            </p>
+        </div>
+
+        <div class="catalog-controls">
+            <label class="search-box">
+                <span aria-hidden="true">⌕</span>
+                <input
+                        type="search"
+                        id="search-input"
+                        placeholder="Cerca un prodotto..."
+                        aria-label="Cerca un prodotto"
+                >
+            </label>
+
+            <label class="sort-box">
+                <span class="visually-hidden">Ordina i prodotti</span>
+                <select id="sort-select">
+                    <option value="featured">In evidenza</option>
+                    <option value="price-asc">Prezzo crescente</option>
+                    <option value="price-desc">Prezzo decrescente</option>
+                    <option value="name">Nome A–Z</option>
+                </select>
+            </label>
+        </div>
+
+        <nav
+                class="category-list"
+                id="category-list"
+                aria-label="Categorie prodotti"
+        >
+            <button
+                    class="category-button active"
+                    data-category="Tutti"
+                    type="button"
+            >
+                Tutti
+            </button>
+
+            <button
+                    class="category-button"
+                    data-category="Sneakers"
+                    type="button"
+            >
+                Sneakers
+            </button>
+
+            <button
+                    class="category-button"
+                    data-category="Abbigliamento"
+                    type="button"
+            >
+                Abbigliamento
+            </button>
+
+            <button
+                    class="category-button"
+                    data-category="Accessori"
+                    type="button"
+            >
+                Accessori
+            </button>
+        </nav>
+
+        <p class="catalog-note">
+            Le taglie indicate sono quelle previste per l'articolo.
+            Chiedi su WhatsApp la disponibilità.
+        </p>
+
+        <div
+                class="product-grid"
+                id="product-grid"
+                aria-live="polite"
+        ></div>
+
+        <p class="empty-message" id="empty-message" hidden>
+            Nessun prodotto trovato. Prova un'altra ricerca.
+        </p>
+    </section>
+
+    <section class="contact-banner">
+        <div>
+            <p class="eyebrow">IL TUO PROSSIMO PREFERITO TI ASPETTA</p>
+
+            <h2>Hai qualche domanda?</h2>
+
+            <p>
+                Per informazioni su taglie, colori e disponibilità,
+                contatta direttamente il negozio.
+            </p>
+        </div>
+
+        <a
+                class="contact-button"
+                id="general-whatsapp"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+        >
+            Scrivici su WhatsApp ↗
+        </a>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <span id="footer-store-name">NOVA STREET</span>
+    <span>Sneakers · Streetwear · Catalogo digitale</span>
+</footer>
+</body>
+</html>
