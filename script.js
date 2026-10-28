@@ -1,131 +1,8 @@
-
 /* ==========================================
-   NOVA STREET — CATALOGO DEMO
-   Configurazione del negozio
+   CATALOGO — CODICE
+   Questo file non si modifica per cambiare
+   negozio: usa config.js e products.js.
 ========================================== */
-
-// Per riutilizzare il catalogo con un altro negozio,
-// modifica questi valori.
-const store = {
-    name: "NOVA STREET",
-    subtitle: "SNEAKERS · STREETWEAR · DAILY STYLE",
-    description:
-        "Scopri la nostra selezione di sneakers, abbigliamento e accessori. Trova i tuoi preferiti e contattaci per informazioni e disponibilità.",
-
-    // Numero WhatsApp con prefisso internazionale,
-    // senza + e senza spazi.
-    whatsapp: "393401220154",
-
-    // Colori personalizzabili del negozio.
-    colors: {
-        background: "#f7f7f5",
-        surface: "#ffffff",
-        text: "#20201e",
-        muted: "#777772",
-        line: "#e6e6e1",
-        accent: "#d8f36a",
-        buttonBackground: "#20201e",
-        buttonText: "#ffffff"
-    }
-};
-
-
-/* ==========================================
-   DATI DIMOSTRATIVI DEI PRODOTTI
-========================================== */
-
-const products = [
-    {
-        id: 1,
-        name: "Sneaker Training Verde Fluo",
-        category: "Sneakers",
-        price: 89.90,
-        sizes: ["40", "41", "42", "43"],
-        colors: ["Verde fluo", "Bianco"],
-        description: "Sneaker sportiva dal colore deciso.",
-        image: "images/sneaker-01.jpg"
-    },
-    {
-        id: 2,
-        name: "Sneaker Bordeaux",
-        category: "Sneakers",
-        price: 69.90,
-        sizes: ["40", "41", "42", "43"],
-        colors: ["Bordeaux", "Bianco"],
-        description: "Un classico in tela e camoscio.",
-        image: "images/sneaker-02.jpg"
-    },
-    {
-        id: 3,
-        name: "Sneaker Bianca",
-        category: "Sneakers",
-        price: 79.90,
-        sizes: ["40", "41", "42", "43"],
-        colors: ["Bianco"],
-        description: "Pelle bianca traforata, facile da abbinare.",
-        image: "images/sneaker-03.jpg"
-    },
-    {
-        id: 4,
-        name: "Felpa Girocollo Nera",
-        category: "Abbigliamento",
-        price: 49.90,
-        sizes: ["S", "M", "L", "XL"],
-        colors: ["Nero"],
-        description: "Felpa oversize con piccolo ricamo.",
-        image: "images/felpa-01.jpg"
-    },
-    {
-        id: 5,
-        name: "Maglione Jacquard",
-        category: "Abbigliamento",
-        price: 79.90,
-        sizes: ["S", "M", "L", "XL"],
-        colors: ["Panna"],
-        description: "Maglione in maglia con grafica jacquard.",
-        image: "images/felpa-02.jpg"
-    },
-    {
-        id: 6,
-        name: "T-shirt Grafica Anime",
-        category: "Abbigliamento",
-        price: 29.90,
-        sizes: ["S", "M", "L", "XL"],
-        colors: ["Nero"],
-        description: "T-shirt oversize con stampa colorata.",
-        image: "images/tshirt-01.jpg"
-    },
-    {
-        id: 7,
-        name: "Pantalone Chino Nero",
-        category: "Abbigliamento",
-        price: 54.90,
-        sizes: ["S", "M", "L", "XL"],
-        colors: ["Nero"],
-        description: "Taglio slim, adatto a ogni occasione.",
-        image: "images/pantalone-01.jpg"
-    },
-    {
-        id: 8,
-        name: "Cappellino Denim Palma",
-        category: "Accessori",
-        price: 24.90,
-        sizes: ["Unica"],
-        colors: ["Azzurro denim"],
-        description: "Cappellino in denim con palma ricamata.",
-        image: "images/cappellino-01.jpg"
-    },
-    {
-        id: 9,
-        name: "Zaino Verde Oliva",
-        category: "Accessori",
-        price: 89.90,
-        sizes: ["Unica"],
-        colors: ["Verde oliva", "Cuoio"],
-        description: "Zaino con dettagli in pelle e tasca frontale.",
-        image: "images/zaino-01.jpg"
-    }
-];
 
 
 /* ==========================================
@@ -192,7 +69,7 @@ function isWhatsappConfigured() {
 function openWhatsapp(message) {
     if (!isWhatsappConfigured()) {
         alert(
-            "Per attivare WhatsApp, inserisci in script.js il numero del negozio " +
+            "Per attivare WhatsApp, inserisci in config.js il numero del negozio " +
             "con prefisso internazionale, senza + e senza spazi."
         );
         return;
@@ -221,11 +98,84 @@ function createTextElement(tagName, className, textContent) {
    PERSONALIZZAZIONE DEL NEGOZIO
 ========================================== */
 
+// Collega ogni colore di config.js alla variabile CSS corrispondente.
+// I colori non indicati restano quelli predefiniti di style.css.
+const COLOR_VARIABLES = {
+    background: "--bg",
+    surface: "--surface",
+    text: "--text",
+    muted: "--muted",
+    line: "--line",
+    accent: "--accent",
+    onAccent: "--on-accent",
+    buttonBackground: "--button-bg",
+    buttonText: "--button-text",
+    bannerBackground: "--banner-bg",
+    imageBackground: "--image-bg",
+    heroBackground: "--hero-bg",
+    heroText: "--hero-text",
+    heroHighlight: "--hero-highlight"
+};
+
+function applyColors(colors) {
+    if (!colors) return;
+
+    const root = document.documentElement;
+
+    Object.entries(COLOR_VARIABLES).forEach(([key, variable]) => {
+        if (colors[key]) {
+            root.style.setProperty(variable, colors[key]);
+        }
+    });
+}
+
+
+function setupLogo() {
+    const storeLogo = document.getElementById("store-logo");
+    const brandMark = document.getElementById("brand-mark");
+
+    if (!storeLogo) return;
+
+    storeLogo.alt = "Logo " + store.name;
+
+    const showLogo = () => {
+        storeLogo.hidden = false;
+
+        if (brandMark) {
+            brandMark.hidden = true;
+        }
+    };
+
+    const showFallback = () => {
+        storeLogo.hidden = true;
+
+        if (brandMark) {
+            brandMark.hidden = false;
+        }
+    };
+
+    storeLogo.addEventListener("load", showLogo, { once: true });
+    storeLogo.addEventListener("error", showFallback, { once: true });
+
+    // Gestisce anche un'immagine già caricata.
+    if (storeLogo.complete) {
+        if (storeLogo.naturalWidth > 0) {
+            showLogo();
+        } else {
+            showFallback();
+        }
+    }
+}
+
+
 function configureStore() {
     // Nome del negozio nella pagina e nel footer.
     storeNameElements.forEach((element) => {
         element.textContent = store.name;
     });
+
+    // Titolo della scheda del browser.
+    document.title = store.title || store.name;
 
     // Sottotitolo e descrizione.
     if (storeSubtitle) {
@@ -236,17 +186,7 @@ function configureStore() {
         heroDescription.textContent = store.description;
     }
 
-    // Applica i colori configurati sopra.
-    const root = document.documentElement;
-
-    root.style.setProperty("--bg", store.colors.background);
-    root.style.setProperty("--surface", store.colors.surface);
-    root.style.setProperty("--text", store.colors.text);
-    root.style.setProperty("--muted", store.colors.muted);
-    root.style.setProperty("--line", store.colors.line);
-    root.style.setProperty("--accent", store.colors.accent);
-    root.style.setProperty("--button-bg", store.colors.buttonBackground);
-    root.style.setProperty("--button-text", store.colors.buttonText);
+    applyColors(store.colors);
 
     // Pulsante WhatsApp generale.
     if (generalWhatsapp) {
@@ -259,50 +199,7 @@ function configureStore() {
         });
     }
 
-    // Gestione del logo: viene eseguita subito,
-    // non quando si clicca su WhatsApp.
-    const storeLogo = document.getElementById("store-logo");
-    const brandMark = document.getElementById("brand-mark");
-
-    if (storeLogo) {
-        storeLogo.alt = "Logo " + store.name;
-
-        // Limita le dimensioni del logo.
-        storeLogo.style.width = "36px";
-        storeLogo.style.height = "36px";
-        storeLogo.style.maxWidth = "36px";
-        storeLogo.style.maxHeight = "36px";
-        storeLogo.style.objectFit = "contain";
-        storeLogo.style.flexShrink = "0";
-
-        const showLogo = () => {
-            storeLogo.hidden = false;
-
-            if (brandMark) {
-                brandMark.hidden = true;
-            }
-        };
-
-        const showFallback = () => {
-            storeLogo.hidden = true;
-
-            if (brandMark) {
-                brandMark.hidden = false;
-            }
-        };
-
-        storeLogo.addEventListener("load", showLogo, { once: true });
-        storeLogo.addEventListener("error", showFallback, { once: true });
-
-        // Gestisce anche un'immagine già caricata.
-        if (storeLogo.complete) {
-            if (storeLogo.naturalWidth > 0) {
-                showLogo();
-            } else {
-                showFallback();
-            }
-        }
-    }
+    setupLogo();
 }
 
 
@@ -310,33 +207,181 @@ function configureStore() {
    CREAZIONE DELLE SCHEDE PRODOTTO
 ========================================== */
 
+const prefersReducedMotion =
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+function getProductImages(product) {
+    if (Array.isArray(product.images) && product.images.length) {
+        return product.images;
+    }
+
+    return product.image ? [product.image] : [];
+}
+
+
+function getBoxLabel(box) {
+    return box.pieces
+        ? "Box da " + box.pieces + " pezzi"
+        : "Box all'ingrosso";
+}
+
+
+function createInfoLine(label, value) {
+    const line = document.createElement("p");
+    line.className = "product-variants";
+
+    line.append(
+        createTextElement("span", "variant-label", label),
+        document.createTextNode(value)
+    );
+
+    return line;
+}
+
+
+// Riquadro foto: una o più immagini.
+// Con più foto compaiono frecce e puntini, e su mobile si scorre col dito.
+function createGallery(product) {
+    const sources = getProductImages(product);
+    const slideCount = Math.max(sources.length, 1);
+
+    const imageWrap = document.createElement("div");
+    imageWrap.className = "product-image-wrap";
+
+    const track = document.createElement("div");
+    track.className = "product-gallery";
+    imageWrap.appendChild(track);
+
+    for (let index = 0; index < slideCount; index += 1) {
+        const slide = document.createElement("div");
+        slide.className = "product-slide";
+
+        // Gestisce le immagini mancanti.
+        const markUnavailable = () => {
+            slide.classList.add("image-unavailable");
+            slide.setAttribute("role", "img");
+            slide.setAttribute(
+                "aria-label",
+                "Foto non disponibile per " + product.name
+            );
+        };
+
+        if (sources[index]) {
+            const image = document.createElement("img");
+            image.className = "product-image";
+            image.src = sources[index];
+            image.alt = sources.length > 1
+                ? product.name + " - foto " + (index + 1) + " di " + sources.length
+                : product.name;
+            image.loading = "lazy";
+            image.decoding = "async";
+
+            image.addEventListener("error", () => {
+                image.hidden = true;
+                markUnavailable();
+            }, { once: true });
+
+            slide.appendChild(image);
+        } else {
+            markUnavailable();
+        }
+
+        track.appendChild(slide);
+    }
+
+    // Con una sola foto non servono frecce né puntini.
+    if (slideCount < 2) {
+        return imageWrap;
+    }
+
+    track.tabIndex = 0;
+    track.setAttribute("aria-label", "Foto di " + product.name);
+
+    const dots = document.createElement("div");
+    dots.className = "gallery-dots";
+    dots.setAttribute("aria-hidden", "true");
+
+    const dotElements = [];
+
+    for (let index = 0; index < slideCount; index += 1) {
+        const dot = document.createElement("span");
+        dot.className = "gallery-dot";
+        dots.appendChild(dot);
+        dotElements.push(dot);
+    }
+
+    const getCurrentIndex = () =>
+        track.clientWidth
+            ? Math.round(track.scrollLeft / track.clientWidth)
+            : 0;
+
+    const updateDots = () => {
+        const current = getCurrentIndex();
+
+        dotElements.forEach((dot, index) => {
+            dot.classList.toggle("active", index === current);
+        });
+    };
+
+    // Dall'ultima foto la freccia avanti torna alla prima, e viceversa.
+    const goTo = (index) => {
+        const target = (index + slideCount) % slideCount;
+
+        track.scrollTo({
+            left: target * track.clientWidth,
+            behavior: prefersReducedMotion ? "auto" : "smooth"
+        });
+    };
+
+    const createArrow = (className, label, symbol, step) => {
+        const arrow = createTextElement(
+            "button",
+            "gallery-arrow " + className,
+            symbol
+        );
+
+        arrow.type = "button";
+        arrow.setAttribute("aria-label", label + " di " + product.name);
+        arrow.addEventListener("click", () => {
+            goTo(getCurrentIndex() + step);
+        });
+
+        return arrow;
+    };
+
+    imageWrap.append(
+        createArrow("gallery-arrow-prev", "Foto precedente", "‹", -1),
+        createArrow("gallery-arrow-next", "Foto successiva", "›", 1),
+        dots
+    );
+
+    track.addEventListener("scroll", updateDots, { passive: true });
+    updateDots();
+
+    return imageWrap;
+}
+
+
 function createProductCard(product) {
     const article = document.createElement("article");
     article.className = "product-card";
 
-    // Contenitore dell'immagine.
-    const imageWrap = document.createElement("div");
-    imageWrap.className = "product-image-wrap";
+    // Le box all'ingrosso hanno campi diversi dai capi singoli.
+    const isBox = Boolean(product.box);
 
-    const image = document.createElement("img");
-    image.className = "product-image";
-    image.src = product.image;
-    image.alt = product.name;
-    image.loading = "lazy";
-    image.decoding = "async";
+    // Pezzo venduto: badge sulla foto, foto attenuata, pulsante disattivato.
+    const isSold = product.sold === true;
+    article.classList.toggle("is-sold", isSold);
 
-    // Gestisce le immagini mancanti.
-    image.addEventListener("error", () => {
-        image.hidden = true;
-        imageWrap.classList.add("image-unavailable");
-        imageWrap.setAttribute("role", "img");
-        imageWrap.setAttribute(
-            "aria-label",
-            "Foto non disponibile per " + product.name
+    // Riquadro foto (una o più immagini).
+    const imageWrap = createGallery(product);
+
+    if (isSold) {
+        imageWrap.appendChild(
+            createTextElement("span", "product-badge", "Venduto")
         );
-    }, { once: true });
-
-    imageWrap.appendChild(image);
+    }
 
     // Categoria, nome, prezzo e taglie.
     const category = createTextElement(
@@ -354,75 +399,84 @@ function createProductCard(product) {
     const price = createTextElement(
         "p",
         "product-price",
-        formatPrice(product.price)
+        isBox
+            ? formatPrice(product.price) + " / box"
+            : formatPrice(product.price)
     );
 
     const sizes = createTextElement(
         "p",
         "product-sizes",
-        getSizesLabel(product.sizes)
+        isBox ? getBoxLabel(product.box) : getSizesLabel(product.sizes)
     );
 
-    // Colori disponibili.
-    const variants = document.createElement("p");
-    variants.className = "product-variants";
+    // Colori (capi) oppure peso (box).
+    let variants = null;
 
-    const colorLabel = createTextElement(
-        "span",
-        "variant-label",
-        "Colori: "
-    );
-
-    variants.append(
-        colorLabel,
-        document.createTextNode(
+    if (isBox) {
+        if (product.box.weight) {
+            variants = createInfoLine("Peso: ", product.box.weight);
+        }
+    } else {
+        variants = createInfoLine(
+            "Colori: ",
             Array.isArray(product.colors) && product.colors.length
                 ? product.colors.join(", ")
                 : "da verificare"
-        )
-    );
-
-    // Descrizione.
-    const description = createTextElement(
-        "p",
-        "product-description",
-        product.description || "Contattaci per maggiori informazioni."
-    );
+        );
+    }
 
     // Pulsante WhatsApp della singola scheda.
     const button = createTextElement(
         "button",
         "product-button",
-        "Chiedi su WhatsApp"
+        isSold ? "Venduto" : "Chiedi su WhatsApp"
     );
 
     button.type = "button";
+    button.disabled = isSold;
 
     button.addEventListener("click", () => {
-        const message = [
-            "Ciao! Vorrei informazioni su questo prodotto:",
-            "",
-            "Prodotto: " + product.name,
-            "Prezzo indicativo: " + formatPrice(product.price),
-            "Taglie indicate: " + (product.sizes || []).join(", "),
-            "Colori indicati: " + (product.colors || []).join(", "),
-            "",
-            "Mi confermate la disponibilità e le varianti?"
-        ].join("\n");
+        const lines = isBox
+            ? [
+                "Ciao! Vorrei informazioni su questa box all'ingrosso:",
+                "",
+                "Box: " + product.name,
+                "Prezzo box: " + formatPrice(product.price),
+                ...(product.box.pieces
+                    ? ["Pezzi: " + product.box.pieces]
+                    : []),
+                ...(product.box.weight
+                    ? ["Peso: " + product.box.weight]
+                    : []),
+                "",
+                "Mi confermate la disponibilità?"
+            ]
+            : [
+                "Ciao! Vorrei informazioni su questo prodotto:",
+                "",
+                "Prodotto: " + product.name,
+                "Prezzo indicativo: " + formatPrice(product.price),
+                "Taglie indicate: " + (product.sizes || []).join(", "),
+                "Colori indicati: " + (product.colors || []).join(", "),
+                "",
+                "Mi confermate la disponibilità e le varianti?"
+            ];
 
-        openWhatsapp(message);
+        openWhatsapp(lines.join("\n"));
     });
 
     // Inserisce tutti gli elementi nella scheda.
     article.append(
-        imageWrap,
-        category,
-        name,
-        price,
-        sizes,
-        variants,
-        description,
-        button
+        ...[
+            imageWrap,
+            category,
+            name,
+            price,
+            sizes,
+            variants,
+            button
+        ].filter(Boolean)
     );
 
     return article;
@@ -441,12 +495,12 @@ function getVisibleProducts() {
     let visibleProducts = products.filter((product) => {
         const matchesCategory =
             selectedCategory === "Tutti" ||
-            product.category === selectedCategory;
+            normalizeCategory(product.category) ===
+            normalizeCategory(selectedCategory);
 
         const searchableText = [
             product.name,
             product.category,
-            product.description,
             ...(product.colors || []),
             ...(product.sizes || [])
         ].join(" ").toLocaleLowerCase("it");
@@ -468,6 +522,15 @@ function getVisibleProducts() {
         visibleProducts.sort((a, b) =>
             a.name.localeCompare(b.name, "it")
         );
+    }
+
+    // I pezzi venduti vanno in fondo, mantenendo l'ordine scelto.
+    // Per disattivarlo metti soldAtEnd: false in config.js.
+    if (store.soldAtEnd !== false) {
+        visibleProducts = [
+            ...visibleProducts.filter((product) => product.sold !== true),
+            ...visibleProducts.filter((product) => product.sold === true)
+        ];
     }
 
     return visibleProducts;
@@ -500,6 +563,89 @@ function renderProducts() {
     if (emptyMessage) {
         emptyMessage.hidden = visibleProducts.length !== 0;
     }
+}
+
+
+/* ==========================================
+   PULSANTI DELLE CATEGORIE
+========================================== */
+
+// Maiuscole e spazi non contano: "Box ingrosso" e "Box Ingrosso"
+// sono la stessa categoria.
+function normalizeCategory(value) {
+    return String(value || "").trim().toLowerCase();
+}
+
+
+// Se config.js ha un elenco "categories", i pulsanti sono quelli,
+// nello stesso ordine. Altrimenti si ricavano dai prodotti.
+function getCategoryNames() {
+    if (Array.isArray(store.categories) && store.categories.length > 0) {
+        const listed = store.categories.map(normalizeCategory);
+
+        const unlisted = [
+            ...new Set(
+                products
+                    .filter((product) => product.category)
+                    .filter((product) =>
+                        !listed.includes(normalizeCategory(product.category))
+                    )
+                    .map((product) => product.category)
+            )
+        ];
+
+        if (unlisted.length > 0) {
+            console.warn(
+                "Categorie dei prodotti non presenti in config.js " +
+                "(questi prodotti si vedono solo in \"Tutti\"):",
+                unlisted
+            );
+        }
+
+        return store.categories;
+    }
+
+    const names = [];
+
+    products.forEach((product) => {
+        const name = String(product.category || "").trim();
+
+        if (
+            name &&
+            !names.some((other) =>
+                normalizeCategory(other) === normalizeCategory(name)
+            )
+        ) {
+            names.push(name);
+        }
+    });
+
+    return names;
+}
+
+
+function renderCategoryButtons() {
+    if (!categoryList) return;
+
+    const categories = ["Tutti", ...getCategoryNames()];
+
+    categoryList.replaceChildren();
+
+    categories.forEach((categoryName) => {
+        const isActive = categoryName === selectedCategory;
+
+        const button = createTextElement(
+            "button",
+            "category-button" + (isActive ? " active" : ""),
+            categoryName
+        );
+
+        button.type = "button";
+        button.dataset.category = categoryName;
+        button.setAttribute("aria-pressed", String(isActive));
+
+        categoryList.appendChild(button);
+    });
 }
 
 
@@ -545,8 +691,218 @@ if (categoryList) {
 
 
 /* ==========================================
+   CATALOGO DA FOGLIO GOOGLE
+========================================== */
+
+// Legge un testo CSV (anche con virgolette e virgole dentro le celle)
+// e restituisce un elenco di righe, ognuna è un elenco di celle.
+function parseCsv(text) {
+    const rows = [];
+    let row = [];
+    let cell = "";
+    let inQuotes = false;
+
+    const source = text.replace(/^\uFEFF/, "");
+
+    for (let index = 0; index < source.length; index += 1) {
+        const char = source[index];
+
+        if (inQuotes) {
+            if (char === '"' && source[index + 1] === '"') {
+                cell += '"';
+                index += 1;
+            } else if (char === '"') {
+                inQuotes = false;
+            } else {
+                cell += char;
+            }
+        } else if (char === '"') {
+            inQuotes = true;
+        } else if (char === ",") {
+            row.push(cell);
+            cell = "";
+        } else if (char === "\n" || char === "\r") {
+            if (char === "\r" && source[index + 1] === "\n") {
+                index += 1;
+            }
+
+            row.push(cell);
+            cell = "";
+            rows.push(row);
+            row = [];
+        } else {
+            cell += char;
+        }
+    }
+
+    if (cell !== "" || row.length > 0) {
+        row.push(cell);
+        rows.push(row);
+    }
+
+    return rows;
+}
+
+
+// "89,90", "89.90" e "€ 89,90" diventano tutti 89.9.
+function parsePrice(value) {
+    let text = String(value || "").replace(/[^\d.,-]/g, "");
+
+    if (text.includes(",")) {
+        text = text.replace(/\./g, "").replace(",", ".");
+    }
+
+    const price = parseFloat(text);
+
+    return Number.isFinite(price) ? price : 0;
+}
+
+
+// "40, 41, 42" oppure "S; M; L" diventano un elenco.
+function toList(value) {
+    return String(value || "")
+        .split(/[,;]/)
+        .map((item) => item.trim())
+        .filter(Boolean);
+}
+
+
+function isSoldValue(value) {
+    return /^(si|sì|s|x|yes|true|1|venduto)$/i.test(String(value || "").trim());
+}
+
+
+// Nel foglio puoi scrivere solo il nome del file (sta in images/),
+// un percorso, un link web o un link di condivisione di Google Drive.
+function resolveImage(value) {
+    const driveMatch = value.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
+
+    if (driveMatch) {
+        return "https://drive.google.com/thumbnail?id=" +
+            driveMatch[1] + "&sz=w1000";
+    }
+
+    if (/^(https?:|data:|\/|images\/)/i.test(value)) {
+        return value;
+    }
+
+    return "images/" + value;
+}
+
+
+// Trasforma le righe del foglio nello stesso formato di products.js.
+function parseSheetProducts(csvText) {
+    const rows = parseCsv(csvText);
+
+    if (rows.length < 2) return [];
+
+    const headers = rows[0].map((header) => header.trim().toLowerCase());
+
+    return rows
+        .slice(1)
+        .map((row) => {
+            const get = (columnName) => {
+                const columnIndex = headers.indexOf(columnName);
+
+                return columnIndex === -1
+                    ? ""
+                    : String(row[columnIndex] || "").trim();
+            };
+
+            return { get };
+        })
+        .filter(({ get }) => get("nome") !== "")
+        .map(({ get }, index) => {
+            const product = {
+                id: index + 1,
+                name: get("nome"),
+                category: get("categoria") || "Altro",
+                price: parsePrice(get("prezzo")),
+                sizes: toList(get("taglie")),
+                colors: toList(get("colori")),
+                sold: isSoldValue(get("venduto")),
+                images: [1, 2, 3, 4, 5]
+                    .map((number) => get("foto" + number))
+                    .filter(Boolean)
+                    .map(resolveImage)
+            };
+
+            // Se "pezzi" è compilato, il prodotto è una box all'ingrosso.
+            if (get("pezzi") !== "") {
+                product.box = {
+                    pieces: parseInt(get("pezzi"), 10) || undefined,
+                    weight: get("peso")
+                };
+            }
+
+            return product;
+        });
+}
+
+
+function showLoadingMessage() {
+    if (productCount) {
+        productCount.textContent = "";
+    }
+
+    if (productGrid) {
+        const message = createTextElement(
+            "p",
+            "empty-message",
+            "Caricamento del catalogo…"
+        );
+
+        message.style.gridColumn = "1 / -1";
+        productGrid.replaceChildren(message);
+    }
+}
+
+
+// Scarica i prodotti dal foglio e sostituisce quelli di products.js.
+// Se qualcosa va storto, il catalogo resta quello di products.js.
+async function loadProductsFromSheet() {
+    try {
+        const response = await fetch(store.sheetUrl, { cache: "no-store" });
+
+        if (!response.ok) {
+            throw new Error("risposta " + response.status);
+        }
+
+        const loadedProducts = parseSheetProducts(await response.text());
+
+        if (loadedProducts.length === 0) {
+            throw new Error("nessun prodotto trovato nel foglio");
+        }
+
+        products.splice(0, products.length, ...loadedProducts);
+
+        console.info(
+            "Catalogo caricato dal foglio Google: " +
+            loadedProducts.length + " prodotti."
+        );
+    } catch (error) {
+        console.warn(
+            "Foglio Google non raggiungibile: uso i prodotti di products.js.",
+            error
+        );
+    }
+}
+
+
+/* ==========================================
    AVVIO DELLA PAGINA
 ========================================== */
 
-configureStore();
-renderProducts();
+async function startCatalog() {
+    configureStore();
+
+    if (store.sheetUrl) {
+        showLoadingMessage();
+        await loadProductsFromSheet();
+    }
+
+    renderCategoryButtons();
+    renderProducts();
+}
+
+startCatalog();

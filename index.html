@@ -6,14 +6,31 @@
 
     <meta
             name="description"
-            content="Scopri NOVA STREET, il catalogo digitale di sneakers, streetwear e accessori. Contattaci per informazioni e disponibilità."
+            content="Scopri SmallVintag3, il catalogo digitale di abbigliamento vintage al dettaglio e all'ingrosso. Contattaci per informazioni e disponibilità."
     >
 
     <meta name="theme-color" content="#20211e">
 
-    <title>NOVA STREET | Sneakers & Streetwear</title>
+    <!-- Anteprima del link quando viene condiviso (WhatsApp, social). -->
+    <!-- Per mostrare anche un'immagine aggiungi og:image con l'URL assoluto, a sito online. -->
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="it_IT">
+    <meta property="og:title" content="SmallVintag3 | Abbigliamento vintage">
+    <meta
+            property="og:description"
+            content="Il catalogo digitale di abbigliamento vintage, al dettaglio e all'ingrosso. Contattaci per informazioni e disponibilità."
+    >
+
+    <link rel="icon" type="image/png"
+          href="data:image/png;base64,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">
+
+    <title>SmallVintag3 | Abbigliamento vintage</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <!-- L'ordine conta: prima i dati, poi il codice. -->
+    <script src="config.js" defer></script>
+    <script src="products.js" defer></script>
     <script src="script.js" defer></script>
 </head>
 
@@ -24,12 +41,12 @@
         <img
                 id="store-logo"
                 class="brand-logo"
-                src="logos/nova-street.png"
-                alt="Logo NOVA STREET"
+                src="logos/smallvintag3.png"
+                alt="Logo SmallVintag3"
                 hidden
         >
-<!--        <span class="brand-mark" id="brand-mark">NS</span>-->
-        <span id="store-name">NOVA STREET</span>
+        <!--        <span class="brand-mark" id="brand-mark">SV</span>-->
+        <span id="store-name">SmallVintag3</span>
     </a>
 
 
@@ -41,18 +58,18 @@
 <main>
     <section class="hero">
         <p class="eyebrow" id="store-subtitle">
-            SNEAKERS · STREETWEAR · DAILY STYLE
+            ABBIGLIAMENTO VINTAGE · DETTAGLIO E INGROSSO
         </p>
 
         <h1>
-            Il tuo stile.<br>
-            <span>Le tue regole.</span>
+            Small si,<br>
+            <span>ma solo nel prezzo.</span>
         </h1>
 
         <p class="hero-description" id="hero-description">
-            Scopri la nostra selezione di sneakers,
-            abbigliamento e accessori. Trova i tuoi preferiti
-            e contattaci per informazioni e disponibilità.
+            Capi vintage selezionati, al dettaglio e all'ingrosso.
+            Scopri i pezzi e le box disponibili e scrivici su WhatsApp
+            per informazioni e disponibilità.
         </p>
 
         <a class="hero-link" href="#catalogo">
@@ -68,7 +85,7 @@
             </div>
 
             <p class="product-count" id="product-count">
-                9 prodotti
+                11 prodotti
             </p>
         </div>
 
@@ -99,37 +116,7 @@
                 id="category-list"
                 aria-label="Categorie prodotti"
         >
-            <button
-                    class="category-button active"
-                    data-category="Tutti"
-                    type="button"
-            >
-                Tutti
-            </button>
-
-            <button
-                    class="category-button"
-                    data-category="Sneakers"
-                    type="button"
-            >
-                Sneakers
-            </button>
-
-            <button
-                    class="category-button"
-                    data-category="Abbigliamento"
-                    type="button"
-            >
-                Abbigliamento
-            </button>
-
-            <button
-                    class="category-button"
-                    data-category="Accessori"
-                    type="button"
-            >
-                Accessori
-            </button>
+            <!-- Pulsanti creati da script.js in base alle categorie di products.js -->
         </nav>
 
         <p class="catalog-note">
@@ -155,7 +142,7 @@
             <h2>Hai qualche domanda?</h2>
 
             <p>
-                Per informazioni su taglie, colori e disponibilità,
+                Per informazioni su taglie, colori, box all'ingrosso e disponibilità,
                 contatta direttamente il negozio.
             </p>
         </div>
@@ -173,8 +160,8 @@
 </main>
 
 <footer class="site-footer">
-    <span id="footer-store-name">NOVA STREET</span>
-    <span>Sneakers · Streetwear · Catalogo digitale</span>
+    <span id="footer-store-name">SmallVintag3</span>
+    <span>Abbigliamento vintage · Catalogo digitale</span>
 </footer>
 </body>
 </html>
