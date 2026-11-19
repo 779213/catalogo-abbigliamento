@@ -1,9 +1,9 @@
-/* ==========================================
-   CATALOGO — CODICE
-   Questo file non si modifica per cambiare
-   negozio: usa config.js e products.js.
-========================================== */
 
+/* ==========================================
+   CATALOGO — CODICE PRINCIPALE
+   Per personalizzare il negozio usa config.js
+   e products.js.
+========================================== */
 
 /* ==========================================
    ELEMENTI HTML
@@ -26,13 +26,7 @@ const sortSelect = document.getElementById("sort-select");
 const categoryList = document.getElementById("category-list");
 const generalWhatsapp = document.getElementById("general-whatsapp");
 
-
-/* ==========================================
-   STATO DEL CATALOGO
-========================================== */
-
 let selectedCategory = "Tutti";
-
 
 /* ==========================================
    FUNZIONI DI SUPPORTO
@@ -44,7 +38,6 @@ function formatPrice(price) {
         currency: "EUR"
     }).format(price);
 }
-
 
 function getSizesLabel(sizes) {
     if (!Array.isArray(sizes) || sizes.length === 0) {
@@ -60,11 +53,9 @@ function getSizesLabel(sizes) {
     return "Taglie: " + sizes.join(", ");
 }
 
-
 function isWhatsappConfigured() {
     return /^\d{8,15}$/.test(String(store.whatsapp));
 }
-
 
 function openWhatsapp(message) {
     if (!isWhatsappConfigured()) {
@@ -84,22 +75,17 @@ function openWhatsapp(message) {
     window.open(url, "_blank", "noopener,noreferrer");
 }
 
-
 function createTextElement(tagName, className, textContent) {
     const element = document.createElement(tagName);
     element.className = className;
     element.textContent = textContent;
-
     return element;
 }
-
 
 /* ==========================================
    PERSONALIZZAZIONE DEL NEGOZIO
 ========================================== */
 
-// Collega ogni colore di config.js alla variabile CSS corrispondente.
-// I colori non indicati restano quelli predefiniti di style.css.
 const COLOR_VARIABLES = {
     background: "--bg",
     surface: "--surface",
@@ -129,7 +115,6 @@ function applyColors(colors) {
     });
 }
 
-
 function setupLogo() {
     const storeLogo = document.getElementById("store-logo");
     const brandMark = document.getElementById("brand-mark");
@@ -157,7 +142,6 @@ function setupLogo() {
     storeLogo.addEventListener("load", showLogo, { once: true });
     storeLogo.addEventListener("error", showFallback, { once: true });
 
-    // Gestisce anche un'immagine già caricata.
     if (storeLogo.complete) {
         if (storeLogo.naturalWidth > 0) {
             showLogo();
@@ -167,17 +151,13 @@ function setupLogo() {
     }
 }
 
-
 function configureStore() {
-    // Nome del negozio nella pagina e nel footer.
     storeNameElements.forEach((element) => {
         element.textContent = store.name;
     });
 
-    // Titolo della scheda del browser.
     document.title = store.title || store.name;
 
-    // Sottotitolo e descrizione.
     if (storeSubtitle) {
         storeSubtitle.textContent = store.subtitle;
     }
@@ -188,7 +168,6 @@ function configureStore() {
 
     applyColors(store.colors);
 
-    // Pulsante WhatsApp generale.
     if (generalWhatsapp) {
         generalWhatsapp.addEventListener("click", (event) => {
             event.preventDefault();
@@ -200,16 +179,100 @@ function configureStore() {
     }
 
     setupLogo();
+    setupMotion();
 }
 
-
 /* ==========================================
-   CREAZIONE DELLE SCHEDE PRODOTTO
+   MOVIMENTO E ANIMAZIONI
 ========================================== */
 
 const prefersReducedMotion =
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+const revealObserver =
+    "IntersectionObserver" in window &&
+    !prefersReducedMotion &&
+    store.animations !== false
+        ? new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.12,
+            rootMargin: "0px 0px -40px 0px"
+        })
+        : null;
+
+function revealOnScroll(element, delay) {
+    if (!revealObserver || !element) return;
+
+    element.classList.add("reveal");
+    element.style.transitionDelay = delay + "ms";
+    revealObserver.observe(element);
+}
+
+// Fascia scorrevole: i testi vengono letti da config.js.
+function setupTicker() {
+    if (!Array.isArray(store.ticker) || store.ticker.length === 0) {
+        return;
+    }
+
+    const hero = document.querySelector(".hero");
+    if (!hero) return;
+
+    const repeats = Math.max(
+        1,
+        Math.ceil(12 / store.ticker.length)
+    );
+
+    const track = document.createElement("div");
+    track.className = "ticker-track";
+
+    // Due gruppi uguali permettono uno scorrimento continuo.
+    for (let copy = 0; copy < 2; copy += 1) {
+        const group = document.createElement("div");
+        group.className = "ticker-group";
+
+        if (copy === 1) {
+            group.setAttribute("aria-hidden", "true");
+        }
+
+        for (let round = 0; round < repeats; round += 1) {
+            store.ticker.forEach((text) => {
+                group.appendChild(
+                    createTextElement("span", "ticker-item", text)
+                );
+            });
+        }
+
+        track.appendChild(group);
+    }
+
+    const ticker = document.createElement("div");
+    ticker.className = "ticker";
+    ticker.appendChild(track);
+
+    hero.after(ticker);
+}
+
+function setupMotion() {
+    if (store.animations === false) {
+        document.documentElement.classList.add("no-motion");
+    }
+
+    setupTicker();
+
+    document
+        .querySelectorAll(".section-heading, .contact-banner")
+        .forEach((element) => revealOnScroll(element, 0));
+}
+
+/* ==========================================
+   PRODOTTI E GALLERIE
+========================================== */
 
 function getProductImages(product) {
     if (Array.isArray(product.images) && product.images.length) {
@@ -219,13 +282,11 @@ function getProductImages(product) {
     return product.image ? [product.image] : [];
 }
 
-
 function getBoxLabel(box) {
     return box.pieces
         ? "Box da " + box.pieces + " pezzi"
         : "Box all'ingrosso";
 }
-
 
 function createInfoLine(label, value) {
     const line = document.createElement("p");
@@ -239,9 +300,8 @@ function createInfoLine(label, value) {
     return line;
 }
 
-
-// Riquadro foto: una o più immagini.
-// Con più foto compaiono frecce e puntini, e su mobile si scorre col dito.
+// Crea il riquadro immagini di un prodotto.
+// Se ci sono più immagini, abilita frecce, puntini e swipe.
 function createGallery(product) {
     const sources = getProductImages(product);
     const slideCount = Math.max(sources.length, 1);
@@ -257,7 +317,6 @@ function createGallery(product) {
         const slide = document.createElement("div");
         slide.className = "product-slide";
 
-        // Gestisce le immagini mancanti.
         const markUnavailable = () => {
             slide.classList.add("image-unavailable");
             slide.setAttribute("role", "img");
@@ -269,11 +328,15 @@ function createGallery(product) {
 
         if (sources[index]) {
             const image = document.createElement("img");
+
             image.className = "product-image";
             image.src = sources[index];
+
             image.alt = sources.length > 1
-                ? product.name + " - foto " + (index + 1) + " di " + sources.length
+                ? product.name + " - foto " +
+                (index + 1) + " di " + sources.length
                 : product.name;
+
             image.loading = "lazy";
             image.decoding = "async";
 
@@ -290,7 +353,7 @@ function createGallery(product) {
         track.appendChild(slide);
     }
 
-    // Con una sola foto non servono frecce né puntini.
+    // Se c'è una sola foto, non servono i comandi della galleria.
     if (slideCount < 2) {
         return imageWrap;
     }
@@ -324,7 +387,6 @@ function createGallery(product) {
         });
     };
 
-    // Dall'ultima foto la freccia avanti torna alla prima, e viceversa.
     const goTo = (index) => {
         const target = (index + slideCount) % slideCount;
 
@@ -343,6 +405,7 @@ function createGallery(product) {
 
         arrow.type = "button";
         arrow.setAttribute("aria-label", label + " di " + product.name);
+
         arrow.addEventListener("click", () => {
             goTo(getCurrentIndex() + step);
         });
@@ -362,19 +425,19 @@ function createGallery(product) {
     return imageWrap;
 }
 
+/* ==========================================
+   CREAZIONE SCHEDA PRODOTTO
+========================================== */
 
 function createProductCard(product) {
     const article = document.createElement("article");
     article.className = "product-card";
 
-    // Le box all'ingrosso hanno campi diversi dai capi singoli.
     const isBox = Boolean(product.box);
-
-    // Pezzo venduto: badge sulla foto, foto attenuata, pulsante disattivato.
     const isSold = product.sold === true;
+
     article.classList.toggle("is-sold", isSold);
 
-    // Riquadro foto (una o più immagini).
     const imageWrap = createGallery(product);
 
     if (isSold) {
@@ -383,7 +446,6 @@ function createProductCard(product) {
         );
     }
 
-    // Categoria, nome, prezzo e taglie.
     const category = createTextElement(
         "p",
         "product-category",
@@ -407,10 +469,11 @@ function createProductCard(product) {
     const sizes = createTextElement(
         "p",
         "product-sizes",
-        isBox ? getBoxLabel(product.box) : getSizesLabel(product.sizes)
+        isBox
+            ? getBoxLabel(product.box)
+            : getSizesLabel(product.sizes)
     );
 
-    // Colori (capi) oppure peso (box).
     let variants = null;
 
     if (isBox) {
@@ -426,7 +489,6 @@ function createProductCard(product) {
         );
     }
 
-    // Pulsante WhatsApp della singola scheda.
     const button = createTextElement(
         "button",
         "product-button",
@@ -466,7 +528,6 @@ function createProductCard(product) {
         openWhatsapp(lines.join("\n"));
     });
 
-    // Inserisce tutti gli elementi nella scheda.
     article.append(
         ...[
             imageWrap,
@@ -482,10 +543,13 @@ function createProductCard(product) {
     return article;
 }
 
-
 /* ==========================================
    FILTRAGGIO E ORDINAMENTO
 ========================================== */
+
+function normalizeCategory(value) {
+    return String(value || "").trim().toLowerCase();
+}
 
 function getVisibleProducts() {
     const searchTerm = searchInput
@@ -505,9 +569,7 @@ function getVisibleProducts() {
             ...(product.sizes || [])
         ].join(" ").toLocaleLowerCase("it");
 
-        const matchesSearch = searchableText.includes(searchTerm);
-
-        return matchesCategory && matchesSearch;
+        return matchesCategory && searchableText.includes(searchTerm);
     });
 
     const sortOption = sortSelect
@@ -524,8 +586,7 @@ function getVisibleProducts() {
         );
     }
 
-    // I pezzi venduti vanno in fondo, mantenendo l'ordine scelto.
-    // Per disattivarlo metti soldAtEnd: false in config.js.
+    // I prodotti venduti vengono spostati in fondo.
     if (store.soldAtEnd !== false) {
         visibleProducts = [
             ...visibleProducts.filter((product) => product.sold !== true),
@@ -535,7 +596,6 @@ function getVisibleProducts() {
 
     return visibleProducts;
 }
-
 
 /* ==========================================
    AGGIORNAMENTO DEL CATALOGO
@@ -548,8 +608,13 @@ function renderProducts() {
 
     productGrid.replaceChildren();
 
-    visibleProducts.forEach((product) => {
-        productGrid.appendChild(createProductCard(product));
+    visibleProducts.forEach((product, index) => {
+        const card = createProductCard(product);
+
+        // Le schede compaiono a scalare durante lo scorrimento.
+        revealOnScroll(card, (index % 4) * 80);
+
+        productGrid.appendChild(card);
     });
 
     if (productCount) {
@@ -565,20 +630,10 @@ function renderProducts() {
     }
 }
 
-
 /* ==========================================
    PULSANTI DELLE CATEGORIE
 ========================================== */
 
-// Maiuscole e spazi non contano: "Box ingrosso" e "Box Ingrosso"
-// sono la stessa categoria.
-function normalizeCategory(value) {
-    return String(value || "").trim().toLowerCase();
-}
-
-
-// Se config.js ha un elenco "categories", i pulsanti sono quelli,
-// nello stesso ordine. Altrimenti si ricavano dai prodotti.
 function getCategoryNames() {
     if (Array.isArray(store.categories) && store.categories.length > 0) {
         const listed = store.categories.map(normalizeCategory);
@@ -596,8 +651,7 @@ function getCategoryNames() {
 
         if (unlisted.length > 0) {
             console.warn(
-                "Categorie dei prodotti non presenti in config.js " +
-                "(questi prodotti si vedono solo in \"Tutti\"):",
+                "Categorie dei prodotti non presenti in config.js:",
                 unlisted
             );
         }
@@ -623,7 +677,6 @@ function getCategoryNames() {
     return names;
 }
 
-
 function renderCategoryButtons() {
     if (!categoryList) return;
 
@@ -648,22 +701,18 @@ function renderCategoryButtons() {
     });
 }
 
-
 /* ==========================================
    EVENTI DELLA PAGINA
 ========================================== */
 
-// Ricerca mentre l'utente digita.
 if (searchInput) {
     searchInput.addEventListener("input", renderProducts);
 }
 
-// Ordinamento per prezzo o nome.
 if (sortSelect) {
     sortSelect.addEventListener("change", renderProducts);
 }
 
-// Filtri per categoria.
 if (categoryList) {
     categoryList.addEventListener("click", (event) => {
         const button = event.target.closest("[data-category]");
@@ -689,13 +738,11 @@ if (categoryList) {
     });
 }
 
-
 /* ==========================================
-   CATALOGO DA FOGLIO GOOGLE
+   LETTURA CSV DA GOOGLE SHEETS
 ========================================== */
 
-// Legge un testo CSV (anche con virgolette e virgole dentro le celle)
-// e restituisce un elenco di righe, ognuna è un elenco di celle.
+// Legge il CSV rispettando le virgolette e le virgole nelle celle.
 function parseCsv(text) {
     const rows = [];
     let row = [];
@@ -743,8 +790,6 @@ function parseCsv(text) {
     return rows;
 }
 
-
-// "89,90", "89.90" e "€ 89,90" diventano tutti 89.9.
 function parsePrice(value) {
     let text = String(value || "").replace(/[^\d.,-]/g, "");
 
@@ -757,8 +802,6 @@ function parsePrice(value) {
     return Number.isFinite(price) ? price : 0;
 }
 
-
-// "40, 41, 42" oppure "S; M; L" diventano un elenco.
 function toList(value) {
     return String(value || "")
         .split(/[,;]/)
@@ -766,16 +809,16 @@ function toList(value) {
         .filter(Boolean);
 }
 
-
 function isSoldValue(value) {
-    return /^(si|sì|s|x|yes|true|1|venduto)$/i.test(String(value || "").trim());
+    return /^(si|sì|s|x|yes|true|1|venduto)$/i.test(
+        String(value || "").trim()
+    );
 }
 
-
-// Nel foglio puoi scrivere solo il nome del file (sta in images/),
-// un percorso, un link web o un link di condivisione di Google Drive.
 function resolveImage(value) {
-    const driveMatch = value.match(/drive\.google\.com\/file\/d\/([\w-]+)/);
+    const driveMatch = value.match(
+        /drive\.google\.com\/file\/d\/([\w-]+)/
+    );
 
     if (driveMatch) {
         return "https://drive.google.com/thumbnail?id=" +
@@ -789,14 +832,14 @@ function resolveImage(value) {
     return "images/" + value;
 }
 
-
-// Trasforma le righe del foglio nello stesso formato di products.js.
 function parseSheetProducts(csvText) {
     const rows = parseCsv(csvText);
 
     if (rows.length < 2) return [];
 
-    const headers = rows[0].map((header) => header.trim().toLowerCase());
+    const headers = rows[0].map((header) =>
+        header.trim().toLowerCase()
+    );
 
     return rows
         .slice(1)
@@ -827,7 +870,6 @@ function parseSheetProducts(csvText) {
                     .map(resolveImage)
             };
 
-            // Se "pezzi" è compilato, il prodotto è una box all'ingrosso.
             if (get("pezzi") !== "") {
                 product.box = {
                     pieces: parseInt(get("pezzi"), 10) || undefined,
@@ -838,7 +880,6 @@ function parseSheetProducts(csvText) {
             return product;
         });
 }
-
 
 function showLoadingMessage() {
     if (productCount) {
@@ -857,18 +898,19 @@ function showLoadingMessage() {
     }
 }
 
-
-// Scarica i prodotti dal foglio e sostituisce quelli di products.js.
-// Se qualcosa va storto, il catalogo resta quello di products.js.
 async function loadProductsFromSheet() {
     try {
-        const response = await fetch(store.sheetUrl, { cache: "no-store" });
+        const response = await fetch(store.sheetUrl, {
+            cache: "no-store"
+        });
 
         if (!response.ok) {
             throw new Error("risposta " + response.status);
         }
 
-        const loadedProducts = parseSheetProducts(await response.text());
+        const loadedProducts = parseSheetProducts(
+            await response.text()
+        );
 
         if (loadedProducts.length === 0) {
             throw new Error("nessun prodotto trovato nel foglio");
@@ -887,7 +929,6 @@ async function loadProductsFromSheet() {
         );
     }
 }
-
 
 /* ==========================================
    AVVIO DELLA PAGINA

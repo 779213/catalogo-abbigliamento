@@ -1,17 +1,17 @@
+
 /* ==========================================
    PRODOTTI DIMOSTRATIVI
    Sostituisci nomi, prezzi, taglie e foto con
-   i dati reali del negozio. Le foto vanno nella
-   cartella images/.
+   i dati reali del negozio. Le foto vanno in images/.
 ========================================== */
 
 /*
-   Campi di ogni prodotto:
+   Campi disponibili:
+
    - image: una foto singola
-   - images: più foto (scorrono nella card con frecce e swipe);
-     se presente ha la precedenza su image
+   - images: più foto con frecce e swipe
    - box: { pieces, weight } per le box all'ingrosso
-     (al posto di sizes e colors)
+   - sold: true per indicare un prodotto venduto
 */
 
 const products = [
@@ -23,6 +23,7 @@ const products = [
         sizes: ["M"],
         image: "images/t-shirt-nike.jpg"
     },
+
     {
         id: 2,
         name: "Felpa Nike",
@@ -31,6 +32,7 @@ const products = [
         sizes: ["S"],
         image: "images/felpa-nike.jpg"
     },
+
     {
         id: 3,
         name: "Giacca Nike",
@@ -39,6 +41,7 @@ const products = [
         sizes: ["XL"],
         image: "images/giacca-nike.jpg"
     },
+
     {
         id: 4,
         name: "Polo Lacoste",
@@ -47,6 +50,7 @@ const products = [
         sizes: ["XL"],
         image: "images/polo-lacoste.jpg"
     },
+
     {
         id: 5,
         name: "T-shirt Adidas",
@@ -55,6 +59,7 @@ const products = [
         sizes: ["L"],
         image: "images/t-shirt-adidas.jpg"
     },
+
     {
         id: 6,
         name: "Giacca Adidas",
@@ -63,6 +68,7 @@ const products = [
         sizes: ["S"],
         image: "images/giacca-adidas.jpg"
     },
+
     {
         id: 7,
         name: "Felpa Adidas",
@@ -71,6 +77,7 @@ const products = [
         sizes: ["M"],
         image: "images/felpa-adidas.jpg"
     },
+
     {
         id: 8,
         name: "Maglione Moncler",
@@ -85,7 +92,12 @@ const products = [
         name: "Box Streetwear Mix",
         category: "Box Ingrosso",
         price: 249.00,
-        box: { pieces: 30, weight: "circa 12 kg" },
+
+        box: {
+            pieces: 30,
+            weight: "circa 12 kg"
+        },
+
         images: [
             "images/box-ingrosso.jpg",
             "images/felpa-adidas.jpg",
@@ -94,20 +106,26 @@ const products = [
             "images/polo-lacoste.jpg"
         ]
     },
+
     {
         id: 10,
         name: "Box Abbigliamento Mix",
         category: "Box Ingrosso",
         price: 189.00,
-        box: { pieces: 40, weight: "circa 8 kg" },
+
+        box: {
+            pieces: 40,
+            weight: "circa 8 kg"
+        },
+
         sold: true,
+
         images: [
             "images/box-ingrosso.jpg",
             "images/t-shirt-adidas.jpg",
             "images/giacca-nike.jpg",
             "images/t-shirt-adidas.jpg",
-            "images/t-shirt-nike.jpg",
-
+            "images/t-shirt-nike.jpg"
         ]
     }
 ];
