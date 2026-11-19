@@ -14,7 +14,7 @@ const store = {
     description: "Capi vintage selezionati, al dettaglio e all'ingrosso. Scopri i pezzi e le box disponibili e scrivici su WhatsApp per informazioni e disponibilità.",
 
     // Inserisci il numero internazionale senza + e senza spazi.
-    whatsapp: "+393409843901",
+    whatsapp: "393409843901",
 
     // I prodotti venduti vengono mostrati in fondo.
     soldAtEnd: true,
