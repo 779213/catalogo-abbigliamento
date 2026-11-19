@@ -898,6 +898,7 @@ function showLoadingMessage() {
     }
 }
 
+
 async function loadProductsFromSheet() {
     try {
         const response = await fetch(store.sheetUrl, {
@@ -905,23 +906,35 @@ async function loadProductsFromSheet() {
         });
 
         if (!response.ok) {
-            throw new Error("risposta " + response.status);
+            console.warn(
+                "Foglio Google non disponibile. Risposta:",
+                response.status
+            );
+            return;
         }
 
         const loadedProducts = parseSheetProducts(
             await response.text()
         );
 
-        if (loadedProducts.length === 0) {
-            throw new Error("nessun prodotto trovato nel foglio");
+        if (!loadedProducts || loadedProducts.length === 0) {
+            console.warn(
+                "Nessun prodotto trovato nel foglio Google. Uso products.js."
+            );
+            return;
         }
 
-        products.splice(0, products.length, ...loadedProducts);
+        products.splice(
+            0,
+            products.length,
+            ...loadedProducts
+        );
 
         console.info(
             "Catalogo caricato dal foglio Google: " +
             loadedProducts.length + " prodotti."
         );
+
     } catch (error) {
         console.warn(
             "Foglio Google non raggiungibile: uso i prodotti di products.js.",
